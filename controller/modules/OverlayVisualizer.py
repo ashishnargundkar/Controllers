@@ -77,21 +77,13 @@ class OverlayVisualizer(ControllerModule):
 
     def timer_method(self):
         with self._vis_ds_lock:
-            vis_ds = self._vis_ds
             # flush old data, next itr provides new data
             self._vis_ds = dict(NodeId=self.node_id,
                                 VizData=defaultdict(dict))
 
         collector_msg = dict(VizData=dict())
 
-        # Filter out overlays for which we do not have LinkManager data
-        for overlay_id in vis_ds["VizData"]:
-            overlay_data = vis_ds["VizData"][overlay_id]
-            # if "LinkManager" in overlay_data and overlay_data["LinkManager"]:
-                # collector_msg["VizData"][overlay_id] = overlay_data
-
         if collector_msg["VizData"]:
-
             # Read the optional human-readable node name specified in the
             # configuration and pass it along to the collector
             if "NodeName" in self._cm_config:
@@ -112,8 +104,8 @@ class OverlayVisualizer(ControllerModule):
 
             except requests.exceptions.RequestException as err:
                 err_msg = "Failed to send data to the IPOP Visualizer" \
-                    " webservice({0}). Exception: {1}" \
-                    .format(self.vis_address, str(err))
+                        " webservice({0}). Exception: {1}" \
+                        .format(self.vis_address, str(err))
                 self.register_cbt("Logger", "LOG_ERROR", err_msg)
         else:
             warn_msg = "Don't have enough data to send. Not forwarding" \
