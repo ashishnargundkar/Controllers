@@ -65,7 +65,8 @@ class OverlayVisualizer(ControllerModule):
                     with self._vis_ds_lock:
                         for mod_name in msg:
                             for ovrl_id in msg[mod_name]:
-                                self._vis_ds["VizData"][ovrl_id][mod_name] = msg[mod_name][ovrl_id]
+                                self._vis_ds["VizData"][ovrl_id][mod_name] = \
+                                        msg[mod_name][ovrl_id]
                 else:
                     warn_msg = "Got no data in CBT response from module" \
                         " {}".format(cbt.request.recipient)
@@ -86,8 +87,8 @@ class OverlayVisualizer(ControllerModule):
         # Filter out overlays for which we do not have LinkManager data
         for overlay_id in vis_ds["VizData"]:
             overlay_data = vis_ds["VizData"][overlay_id]
-            if "LinkManager" in overlay_data and overlay_data["LinkManager"]:
-                collector_msg["VizData"][overlay_id] = overlay_data
+            # if "LinkManager" in overlay_data and overlay_data["LinkManager"]:
+                # collector_msg["VizData"][overlay_id] = overlay_data
 
         if collector_msg["VizData"]:
 
